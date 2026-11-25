@@ -28,7 +28,7 @@ jobs:
 
       - name: Build debug APK
         working-directory: LinkGuard
-        run: chmod +x gradlew && ./gradlew --no-daemon assembleDebug
+        run: gradle --no-daemon assembleDebug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
