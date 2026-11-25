@@ -1,3 +1,4 @@
+
 name: Build LinkGuard APK
 
 on:
@@ -8,19 +9,16 @@ on:
 permissions:
   contents: read
 
-env:
-  ANDROID_HOME: /usr/local/lib/android-sdk
-  ANDROID_SDK_ROOT: /usr/local/lib/android-sdk
-
 jobs:
   build-apk:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -29,12 +27,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build debug APK
-        run: gradle --no-daemon assembleDebug
+        working-directory: LinkGuard
+        run: chmod +x gradlew && ./gradlew --no-daemon assembleDebug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: LinkGuard-debug-apk
-          path: app/build/outputs/apk/debug/*.apk
+          path: LinkGuard/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 14
